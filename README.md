@@ -102,7 +102,16 @@ NEXT_PUBLIC_API_URL="http://localhost:5000/api"
 
 ### 4. Set Up the Database
 
-#### Create the database
+#### Option A: Using Docker (Recommended)
+```bash
+# Start PostgreSQL using Docker Compose
+docker-compose up -d
+```
+
+This will start PostgreSQL on port 5432 with the credentials from .env
+
+#### Option B: Using existing PostgreSQL
+If you have PostgreSQL installed locally, create the database:
 ```bash
 createdb career_roadmap
 ```
@@ -136,6 +145,32 @@ Backend will run on http://localhost:5000
 npm run dev
 ```
 Frontend will run on http://localhost:3000
+
+## 🧪 Testing
+
+See [TESTING.md](./TESTING.md) for comprehensive testing guide.
+
+Quick test:
+1. Visit http://localhost:3000
+2. Sign up with a new account
+3. Complete the onboarding quiz
+4. Generate your roadmap
+5. Track your progress
+
+## 🐳 Docker Support
+
+The project includes Docker Compose configuration for easy PostgreSQL setup:
+
+```bash
+# Start PostgreSQL
+docker-compose up -d
+
+# Stop PostgreSQL
+docker-compose down
+
+# View logs
+docker-compose logs -f
+```
 
 ## 🎯 Usage Guide
 
