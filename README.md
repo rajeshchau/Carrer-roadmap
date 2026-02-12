@@ -205,10 +205,23 @@ The application uses the following main models:
 ## 🔒 Security Features
 
 - JWT-based authentication
-- Password hashing with bcrypt
+- Password hashing with bcrypt (10 rounds)
 - Role-based access control (USER/ADMIN)
-- Protected API routes
+- Protected API routes with middleware
 - Environment variable configuration
+- Secure JWT secret validation (server fails to start if not provided)
+
+### Production Considerations
+
+For production deployment, consider adding:
+- **Rate limiting**: Use express-rate-limit to prevent brute-force attacks
+- **HTTPS**: Always use SSL/TLS in production
+- **CORS configuration**: Restrict allowed origins
+- **Input validation**: Add comprehensive input sanitization (e.g., express-validator)
+- **Helmet.js**: Add security headers
+- **Database connection pooling**: Configure Prisma for production
+- **Logging**: Add proper logging and monitoring
+- **Environment-specific configs**: Separate dev/staging/prod configurations
 
 ## 📝 API Endpoints
 
