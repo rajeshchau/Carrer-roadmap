@@ -1,6 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  console.error('FATAL ERROR: JWT_SECRET is not defined in environment variables');
+  process.exit(1);
+}
+
 export interface AuthRequest extends Request {
   userId?: string;
   userRole?: string;
@@ -14,7 +21,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
       return res.status(401).json({ error: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret-key-please-change-in-production') as any;
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
     req.userId = decoded.userId;
     req.userRole = decoded.role;
     next();

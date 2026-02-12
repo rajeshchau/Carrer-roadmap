@@ -1,3 +1,5 @@
+import { User } from './types';
+
 export const getToken = (): string | null => {
   if (typeof window !== 'undefined') {
     return localStorage.getItem('token');
@@ -17,7 +19,7 @@ export const removeToken = (): void => {
   }
 };
 
-export const getUser = (): any => {
+export const getUser = (): User | null => {
   if (typeof window !== 'undefined') {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
@@ -25,7 +27,7 @@ export const getUser = (): any => {
   return null;
 };
 
-export const setUser = (user: any): void => {
+export const setUser = (user: User): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('user', JSON.stringify(user));
   }

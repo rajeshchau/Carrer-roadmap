@@ -4,6 +4,13 @@ import jwt from 'jsonwebtoken';
 import prisma from '../utils/prisma';
 import { AuthRequest } from '../middleware/auth';
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  console.error('FATAL ERROR: JWT_SECRET is not defined in environment variables');
+  process.exit(1);
+}
+
 export const signup = async (req: Request, res: Response) => {
   try {
     const { email, password, name } = req.body;
@@ -34,7 +41,7 @@ export const signup = async (req: Request, res: Response) => {
     // Generate token
     const token = jwt.sign(
       { userId: user.id, role: user.role },
-      process.env.JWT_SECRET || 'dev-secret-key-please-change-in-production',
+      JWT_SECRET,
       { expiresIn: '7d' }
     );
 
@@ -78,7 +85,7 @@ export const login = async (req: Request, res: Response) => {
     // Generate token
     const token = jwt.sign(
       { userId: user.id, role: user.role },
-      process.env.JWT_SECRET || 'dev-secret-key-please-change-in-production',
+      JWT_SECRET,
       { expiresIn: '7d' }
     );
 
