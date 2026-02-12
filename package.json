@@ -1,0 +1,58 @@
+{
+  "name": "carrer-roadmap",
+  "version": "1.0.0",
+  "description": "AI-powered Personalized Career Roadmap LMS that generates curated Free &amp; Premium learning paths based on user goals, skill level, and timeline — with progress tracking and admin roadmap management.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "backend": "tsx backend/server.ts",
+    "backend:dev": "tsx watch backend/server.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "prisma:studio": "prisma studio",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajeshchau/Carrer-roadmap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rajeshchau/Carrer-roadmap/issues"
+  },
+  "homepage": "https://github.com/rajeshchau/Carrer-roadmap#readme",
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "@types/node": "^25.2.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.24",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "next": "^16.1.6",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "3.4.17",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "prisma": "5.22.0",
+    "tsx": "^4.21.0"
+  }
+}
