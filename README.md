@@ -1,2 +1,240 @@
-# Carrer-roadmap
-AI-powered Personalized Career Roadmap LMS that generates curated Free &amp; Premium learning paths based on user goals, skill level, and timeline — with progress tracking and admin roadmap management.
+# Career Roadmap LMS 🎓
+
+AI-powered Personalized Career Roadmap LMS that generates curated Free & Premium learning paths based on user goals, skill level, and timeline — with progress tracking and admin roadmap management.
+
+## 🚀 Features
+
+### For Learners
+- **🔐 Secure Authentication**: JWT-based signup and login
+- **📝 Onboarding Quiz**: Personalized assessment of skill level, career goals, timeline, and domain
+- **🗺️ AI-Powered Roadmaps**: Rule-based roadmap generation matching your profile
+- **📊 Progress Tracking**: Visual dashboard to track your learning journey
+- **💎 Free & Premium Resources**: Access to both free and premium learning materials
+- **✅ Step Completion**: Mark steps as completed and see your progress grow
+
+### For Administrators
+- **🛠️ Template Management**: Create and manage roadmap templates
+- **📚 Step & Resource Management**: Add learning steps and resources to templates
+- **🎯 Domain Configuration**: Configure roadmaps for different domains (Web Dev, Data Science, etc.)
+- **⚙️ Full CRUD Operations**: Complete control over roadmap templates
+
+## 🏗️ Tech Stack
+
+### Frontend
+- **Next.js 16** with App Router
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS 4**
+
+### Backend
+- **Node.js**
+- **Express 5**
+- **TypeScript**
+- **JWT Authentication**
+
+### Database
+- **PostgreSQL**
+- **Prisma ORM 5**
+
+## 📁 Project Structure
+
+```
+carrer-roadmap/
+├── app/                    # Next.js App Router pages
+│   ├── auth/              # Authentication pages (signup/login)
+│   ├── quiz/              # Onboarding quiz
+│   ├── dashboard/         # User dashboard
+│   ├── admin/             # Admin panel
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Landing page
+│   └── globals.css        # Global styles
+├── backend/               # Express backend
+│   ├── controllers/       # Business logic
+│   ├── routes/            # API routes
+│   ├── middleware/        # Auth middleware
+│   ├── utils/             # Utilities (Prisma client)
+│   └── server.ts          # Express server
+├── components/            # Reusable React components
+├── lib/                   # Frontend utilities
+│   ├── api.ts            # API client functions
+│   └── auth.ts           # Auth helper functions
+├── prisma/               # Database schema and migrations
+│   ├── schema.prisma     # Database schema
+│   └── seed.ts           # Seed data
+└── public/               # Static assets
+```
+
+## 🛠️ Setup Instructions
+
+### Prerequisites
+- Node.js (v18 or higher)
+- PostgreSQL database
+- npm or yarn
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/rajeshchau/Carrer-roadmap.git
+cd Carrer-roadmap
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+Create a `.env` file in the root directory:
+
+```env
+# Database
+DATABASE_URL="postgresql://postgres:password@localhost:5432/career_roadmap?schema=public"
+
+# JWT Secret
+JWT_SECRET="your-secret-key-change-in-production"
+
+# Backend
+BACKEND_PORT=5000
+BACKEND_URL="http://localhost:5000"
+
+# Next.js
+NEXT_PUBLIC_API_URL="http://localhost:5000/api"
+```
+
+### 4. Set Up the Database
+
+#### Create the database
+```bash
+createdb career_roadmap
+```
+
+#### Run Prisma migrations
+```bash
+npm run prisma:migrate
+```
+
+#### Seed the database with sample data
+```bash
+npm run prisma:seed
+```
+
+This will create:
+- Admin user: `admin@career-roadmap.com` (password: `admin123`)
+- Web Development roadmap template with 6 steps
+- Data Science roadmap template with 5 steps
+- Free and Premium resources for each step
+
+### 5. Run the Application
+
+#### Start the backend server
+```bash
+npm run backend:dev
+```
+Backend will run on http://localhost:5000
+
+#### Start the frontend (in a new terminal)
+```bash
+npm run dev
+```
+Frontend will run on http://localhost:3000
+
+## 🎯 Usage Guide
+
+### For Learners
+
+1. **Sign Up**: Visit http://localhost:3000 and click "Sign Up"
+2. **Complete Onboarding Quiz**: After signup, complete the quiz to define your learning profile
+3. **Generate Roadmap**: On the dashboard, click "Generate Roadmap" to get your personalized learning path
+4. **Track Progress**: Check off steps as you complete them and watch your progress grow
+5. **Access Resources**: Click on resources to access free and premium learning materials
+
+### For Administrators
+
+1. **Login**: Use admin credentials (`admin@career-roadmap.com` / `admin123`)
+2. **Access Admin Panel**: You'll be redirected to `/admin`
+3. **Create Templates**: Click "Create Template" to add new roadmap templates
+4. **Manage Templates**: View, edit, or delete existing templates
+5. **Add Steps**: Add learning steps with resources to each template
+
+## 📊 Database Schema
+
+The application uses the following main models:
+
+- **User**: User accounts with role-based access (USER/ADMIN)
+- **QuizResult**: Stores user's onboarding quiz answers
+- **RoadmapTemplate**: Roadmap templates created by admins
+- **RoadmapStep**: Individual learning steps within a template
+- **Resource**: Learning resources (articles, videos, courses) for each step
+- **UserRoadmap**: Links users to their assigned roadmaps
+- **Progress**: Tracks completion status of each step
+
+## 🔒 Security Features
+
+- JWT-based authentication
+- Password hashing with bcrypt
+- Role-based access control (USER/ADMIN)
+- Protected API routes
+- Environment variable configuration
+
+## 📝 API Endpoints
+
+### Authentication
+- `POST /api/auth/signup` - Create new user account
+- `POST /api/auth/login` - User login
+- `GET /api/auth/profile` - Get user profile (protected)
+
+### Quiz
+- `POST /api/quiz/submit` - Submit onboarding quiz (protected)
+- `GET /api/quiz/result` - Get quiz results (protected)
+
+### Roadmap
+- `POST /api/roadmap/generate` - Generate personalized roadmap (protected)
+- `GET /api/roadmap/my-roadmaps` - Get user's roadmaps (protected)
+- `GET /api/roadmap/:id` - Get roadmap details (protected)
+
+### Progress
+- `POST /api/progress/update` - Update step completion (protected)
+- `GET /api/progress/:roadmapId` - Get progress statistics (protected)
+
+### Admin (protected, admin-only)
+- `GET /api/admin/templates` - List all templates
+- `POST /api/admin/templates` - Create template
+- `PUT /api/admin/templates/:id` - Update template
+- `DELETE /api/admin/templates/:id` - Delete template
+- `POST /api/admin/templates/:templateId/steps` - Create step
+- `PUT /api/admin/steps/:id` - Update step
+- `DELETE /api/admin/steps/:id` - Delete step
+
+## 🛠️ Available Scripts
+
+```bash
+# Frontend
+npm run dev          # Start Next.js development server
+npm run build        # Build for production
+npm start            # Start production server
+
+# Backend
+npm run backend      # Start backend server
+npm run backend:dev  # Start backend with auto-reload
+
+# Database
+npm run prisma:generate  # Generate Prisma client
+npm run prisma:migrate   # Run database migrations
+npm run prisma:seed      # Seed database with sample data
+npm run prisma:studio    # Open Prisma Studio (database GUI)
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+ISC
+
+## 👤 Author
+
+Created for the Career Roadmap LMS project.
+
+---
+
+**Note**: This is a learning management system designed to help individuals create personalized career development plans. Make sure to change the JWT secret and admin password in production!

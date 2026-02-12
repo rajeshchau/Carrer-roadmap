@@ -113,7 +113,7 @@ export const getRoadmapDetails = async (req: AuthRequest, res: Response) => {
 
     const roadmap = await prisma.userRoadmap.findFirst({
       where: {
-        id,
+        id: id as string,
         userId,
       },
       include: {

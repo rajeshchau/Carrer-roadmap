@@ -65,7 +65,7 @@ export const getProgress = async (req: AuthRequest, res: Response) => {
     // Get roadmap with steps
     const roadmap = await prisma.userRoadmap.findFirst({
       where: {
-        id: roadmapId,
+        id: roadmapId as string,
         userId,
       },
       include: {
@@ -82,7 +82,7 @@ export const getProgress = async (req: AuthRequest, res: Response) => {
     }
 
     // Get progress for all steps
-    const stepIds = roadmap.template.steps.map(step => step.id);
+    const stepIds = roadmap.template.steps.map((step: any) => step.id);
     const progress = await prisma.progress.findMany({
       where: {
         userId,

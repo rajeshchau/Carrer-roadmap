@@ -61,7 +61,7 @@ export const updateTemplate = async (req: Request, res: Response) => {
     const { title, description, domain, skillLevel, timeline } = req.body;
 
     const template = await prisma.roadmapTemplate.update({
-      where: { id },
+      where: { id: id as string },
       data: {
         ...(title && { title }),
         ...(description && { description }),
@@ -86,7 +86,7 @@ export const deleteTemplate = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     await prisma.roadmapTemplate.delete({
-      where: { id },
+      where: { id: id as string },
     });
 
     res.json({ message: 'Template deleted successfully' });
@@ -140,7 +140,7 @@ export const updateStep = async (req: Request, res: Response) => {
     const { order, title, description, duration } = req.body;
 
     const step = await prisma.roadmapStep.update({
-      where: { id },
+      where: { id: id as string },
       data: {
         ...(order && { order }),
         ...(title && { title }),
@@ -164,7 +164,7 @@ export const deleteStep = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     await prisma.roadmapStep.delete({
-      where: { id },
+      where: { id: id as string },
     });
 
     res.json({ message: 'Step deleted successfully' });
