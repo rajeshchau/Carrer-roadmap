@@ -32,8 +32,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(templates);
   } catch (error) {
-    console.error('Get templates error', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Failed to fetch roadmap templates:', error);
+    return NextResponse.json({ error: 'Failed to retrieve templates' }, { status: 500 });
   }
 }
 
