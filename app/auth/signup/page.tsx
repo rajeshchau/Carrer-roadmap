@@ -21,7 +21,8 @@ export default function SignupPage() {
     setError('');
     setLoading(true);
     try {
-      const result = await api.signup(formData);
+      const { confirmPassword, ...signupData } = formData;
+      const result = await api.signup(signupData);
       if (result.error) {
         setError(result.issue ? `${result.error} (${result.issue})` : result.error);
       } else {

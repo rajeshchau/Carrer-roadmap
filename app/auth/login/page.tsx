@@ -17,7 +17,8 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      const result = await api.login(formData);
+      const { remember, ...loginData } = formData;
+      const result = await api.login(loginData);
       if (result.error) {
         setError(result.issue ? `${result.error} (${result.issue})` : result.error);
       } else {
