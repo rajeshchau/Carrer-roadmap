@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/server/prisma';
+import { getPrisma } from '@/lib/server/prisma';
 import { readAuthToken } from '@/lib/server/auth';
 
 function ensureAdmin(request: NextRequest) {
@@ -15,6 +15,7 @@ function ensureAdmin(request: NextRequest) {
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const prisma = getPrisma();
     const { error } = ensureAdmin(request);
     if (error) return error;
 

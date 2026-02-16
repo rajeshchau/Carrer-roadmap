@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/server/prisma';
+import { getPrisma } from '@/lib/server/prisma';
 import { readAuthToken } from '@/lib/server/auth';
 
 function ensureAdmin(request: NextRequest) {
@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
   const { error } = ensureAdmin(request);
   if (error) return error;
 
+  const prisma = getPrisma();
+
   const templates = await prisma.roadmapTemplate.findMany({
     include: {
       steps: {
@@ -32,6 +34,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const prisma = getPrisma();
     const { error } = ensureAdmin(request);
     if (error) return error;
 
