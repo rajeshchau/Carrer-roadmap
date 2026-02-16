@@ -39,11 +39,11 @@ AI-powered Personalized Career Roadmap LMS that generates curated Free & Premium
 - **TypeScript**
 - **Tailwind CSS 4**
 
-### Backend
-- **Node.js**
-- **Express 5**
+### Backend (Integrated in Next.js)
+- **Next.js Route Handlers (`app/api/*`)**
 - **TypeScript**
 - **JWT Authentication**
+- **Prisma-powered server logic**
 
 ### Database
 - **PostgreSQL**
@@ -61,12 +61,12 @@ carrer-roadmap/
 │   ├── layout.tsx         # Root layout
 │   ├── page.tsx           # Landing page
 │   └── globals.css        # Global styles
-├── backend/               # Express backend
-│   ├── controllers/       # Business logic
-│   ├── routes/            # API routes
-│   ├── middleware/        # Auth middleware
-│   ├── utils/             # Utilities (Prisma client)
-│   └── server.ts          # Express server
+├── app/api/               # Next.js API Route Handlers
+│   ├── auth/              # Login / signup / profile
+│   ├── quiz/              # Quiz submit / result
+│   ├── roadmap/           # Roadmap generation / retrieval
+│   ├── progress/          # Progress updates
+│   └── admin/             # Admin template management
 ├── components/            # Reusable React components
 ├── lib/                   # Frontend utilities
 │   ├── api.ts            # API client functions
@@ -105,12 +105,7 @@ DATABASE_URL="postgresql://postgres:password@localhost:5432/career_roadmap?schem
 # JWT Secret
 JWT_SECRET="your-secret-key-change-in-production"
 
-# Backend
-BACKEND_PORT=5000
-BACKEND_URL="http://localhost:5000"
-
-# Next.js
-NEXT_PUBLIC_API_URL="http://localhost:5000/api"
+NEXT_PUBLIC_API_URL="/api"
 ```
 
 ### 4. Set Up the Database
@@ -141,23 +136,18 @@ npm run prisma:seed
 
 This will create:
 - Admin user: `admin@career-roadmap.com` (password: `admin123`)
+- Demo learner: `demo@career-roadmap.com` (password: `demo123`)
 - Web Development roadmap template with 6 steps
 - Data Science roadmap template with 5 steps
 - Free and Premium resources for each step
 
 ### 5. Run the Application
 
-#### Start the backend server
-```bash
-npm run backend:dev
-```
-Backend will run on http://localhost:5000
-
-#### Start the frontend (in a new terminal)
+#### Start the full app (frontend + integrated API)
 ```bash
 npm run dev
 ```
-Frontend will run on http://localhost:3000
+App will run on http://localhost:3000
 
 ## 🧪 Testing
 
@@ -198,6 +188,8 @@ docker-compose logs -f
 ### For Administrators
 
 1. **Login**: Use admin credentials (`admin@career-roadmap.com` / `admin123`)
+
+> Quick test login for learner pages: `demo@career-roadmap.com` / `demo123`.
 2. **Access Admin Panel**: You'll be redirected to `/admin`
 3. **Create Templates**: Click "Create Template" to add new roadmap templates
 4. **Manage Templates**: View, edit, or delete existing templates
@@ -299,3 +291,12 @@ Created for the Career Roadmap LMS project.
 ---
 
 **Note**: This is a learning management system designed to help individuals create personalized career development plans. Make sure to change the JWT secret and admin password in production!
+
+
+## 🧯 Troubleshooting
+
+- **`/api/auth/login` returns 500**: this usually means server env is missing or DB is not ready.
+  1. Confirm `.env` contains `DATABASE_URL` and `JWT_SECRET`.
+  2. Run `npm run prisma:migrate` to ensure schema exists.
+  3. Verify PostgreSQL is running and reachable from `DATABASE_URL`.
+- **User already exists** on signup: use a different email than seeded accounts (`demo@career-roadmap.com`, `admin@career-roadmap.com`).
