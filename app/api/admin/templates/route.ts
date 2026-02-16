@@ -37,6 +37,22 @@ export async function GET(request: NextRequest) {
     const mapped = toApiError(error);
     return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
   }
+  const { error } = ensureAdmin(request);
+  if (error) return error;
+
+  const prisma = getPrisma();
+
+  const templates = await prisma.roadmapTemplate.findMany({
+    include: {
+      steps: {
+        include: { resources: true },
+        orderBy: { order: 'asc' },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return NextResponse.json(templates);
 }
 
 export async function POST(request: NextRequest) {
@@ -60,5 +76,6 @@ export async function POST(request: NextRequest) {
     console.error('Create template error', error);
     const mapped = toApiError(error);
     return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

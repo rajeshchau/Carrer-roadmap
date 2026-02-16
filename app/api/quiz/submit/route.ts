@@ -26,5 +26,6 @@ export async function POST(request: NextRequest) {
     console.error('Submit quiz error', error);
     const mapped = toApiError(error);
     return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

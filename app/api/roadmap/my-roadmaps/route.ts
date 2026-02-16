@@ -32,5 +32,6 @@ export async function GET(request: NextRequest) {
     console.error('Get my roadmaps error', error);
     const mapped = toApiError(error);
     return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

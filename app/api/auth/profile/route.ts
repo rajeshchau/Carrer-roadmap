@@ -23,5 +23,6 @@ export async function GET(request: NextRequest) {
     console.error('Profile error', error);
     const mapped = toApiError(error);
     return NextResponse.json({ error: mapped.error }, { status: mapped.status });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -29,5 +29,6 @@ export async function POST(request: Request) {
     console.error('Login error', error);
     const mapped = toApiError(error);
     return NextResponse.json({ error: mapped.error }, { status: mapped.status });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
