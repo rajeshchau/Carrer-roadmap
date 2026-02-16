@@ -14,22 +14,27 @@ function ensureAdmin(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const { error } = ensureAdmin(request);
-  if (error) return error;
+  try {
+    const { error } = ensureAdmin(request);
+    if (error) return error;
 
-  const prisma = getPrisma();
+    const prisma = getPrisma();
 
-  const templates = await prisma.roadmapTemplate.findMany({
-    include: {
-      steps: {
-        include: { resources: true },
-        orderBy: { order: 'asc' },
+    const templates = await prisma.roadmapTemplate.findMany({
+      include: {
+        steps: {
+          include: { resources: true },
+          orderBy: { order: 'asc' },
+        },
       },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+      orderBy: { createdAt: 'desc' },
+    });
 
-  return NextResponse.json(templates);
+    return NextResponse.json(templates);
+  } catch (error) {
+    console.error('Failed to fetch roadmap templates:', error);
+    return NextResponse.json({ error: 'Failed to retrieve templates' }, { status: 500 });
+  }
 }
 
 export async function POST(request: NextRequest) {
