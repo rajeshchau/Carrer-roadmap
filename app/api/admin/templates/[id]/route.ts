@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPrisma } from '@/lib/server/prisma';
 import { readAuthToken } from '@/lib/server/auth';
+import { toApiError } from '@/lib/server/errors';
 
 function ensureAdmin(request: NextRequest) {
   const auth = readAuthToken(request);
@@ -25,6 +26,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     return NextResponse.json({ message: 'Template deleted successfully' });
   } catch (error) {
     console.error('Delete template error', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const mapped = toApiError(error);
+    return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPrisma } from '@/lib/server/prisma';
 import { readAuthToken } from '@/lib/server/auth';
+import { toApiError } from '@/lib/server/errors';
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,6 +47,7 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
   } catch (error) {
     console.error('Generate roadmap error', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const mapped = toApiError(error);
+    return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
   }
 }

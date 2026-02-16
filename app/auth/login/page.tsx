@@ -19,7 +19,7 @@ export default function LoginPage() {
     try {
       const result = await api.login(formData);
       if (result.error) {
-        setError(result.error);
+        setError(result.issue ? `${result.error} (${result.issue})` : result.error);
       } else {
         setToken(result.token);
         setUser(result.user);

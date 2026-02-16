@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPrisma } from '@/lib/server/prisma';
 import { readAuthToken } from '@/lib/server/auth';
+import { toApiError } from '@/lib/server/errors';
 
 function ensureAdmin(request: NextRequest) {
   const auth = readAuthToken(request);
@@ -14,22 +15,28 @@ function ensureAdmin(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const { error } = ensureAdmin(request);
-  if (error) return error;
+  try {
+    const { error } = ensureAdmin(request);
+    if (error) return error;
 
-  const prisma = getPrisma();
+    const prisma = getPrisma();
 
-  const templates = await prisma.roadmapTemplate.findMany({
-    include: {
-      steps: {
-        include: { resources: true },
-        orderBy: { order: 'asc' },
+    const templates = await prisma.roadmapTemplate.findMany({
+      include: {
+        steps: {
+          include: { resources: true },
+          orderBy: { order: 'asc' },
+        },
       },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+      orderBy: { createdAt: 'desc' },
+    });
 
-  return NextResponse.json(templates);
+    return NextResponse.json(templates);
+  } catch (error) {
+    console.error('Get templates error', error);
+    const mapped = toApiError(error);
+    return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -51,6 +58,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Template created successfully', template }, { status: 201 });
   } catch (error) {
     console.error('Create template error', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const mapped = toApiError(error);
+    return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
   }
 }
