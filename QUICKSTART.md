@@ -20,10 +20,13 @@ npm install
 
 ## Step 2: Environment Setup
 
-The `.env` file is already created with development settings. For production, update the values:
+Create your `.env` file from the example:
 
 ```bash
-# Review and update .env file
+# Create .env file
+cp .env.example .env
+
+# Review the settings
 cat .env
 
 # Generate a secure JWT secret for production

@@ -96,7 +96,13 @@ npm install
 ```
 
 ### 3. Configure Environment Variables
-Create a `.env` file in the root directory:
+Copy the `.env.example` file to create your `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+The default values are configured for local development with Docker. For production, update these values:
 
 ```env
 # Database - Use a cloud PostgreSQL provider for Vercel (Neon, Supabase, Vercel Postgres, etc.)

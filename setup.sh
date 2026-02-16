@@ -19,6 +19,16 @@ fi
 echo "✓ Docker and Node.js are installed"
 echo ""
 
+# Create .env file if it doesn't exist
+if [ ! -f ".env" ]; then
+    echo "📝 Creating .env file from .env.example..."
+    cp .env.example .env
+    echo "✓ .env file created"
+else
+    echo "✓ .env file already exists"
+fi
+echo ""
+
 # Start PostgreSQL with Docker
 echo "📦 Starting PostgreSQL database..."
 docker-compose up -d
