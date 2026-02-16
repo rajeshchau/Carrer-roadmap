@@ -8,10 +8,7 @@ import { setToken, setUser } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '', remember: false });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -19,89 +16,39 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       const result = await api.login(formData);
-      
       if (result.error) {
         setError(result.error);
       } else {
         setToken(result.token);
         setUser(result.user);
-        
-        // Redirect based on role
-        if (result.user.role === 'ADMIN') {
-          router.push('/admin');
-        } else {
-          router.push('/dashboard');
-        }
+        router.push(result.user.role === 'ADMIN' ? '/admin' : '/dashboard');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    } catch {
+      setError('Unable to login right now.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
-        <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">Login</h1>
-        <p className="text-center text-gray-600 mb-6">Welcome back! Please login to continue</p>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded mb-4">
-            {error}
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl bg-white p-8 shadow-sm">
+        <h1 className="mb-2 text-3xl font-bold">Login</h1>
+        <p className="mb-6 text-gray-600">Welcome back to PathForge.</p>
+        {error && <p className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+        <div className="space-y-4">
+          <input type="email" placeholder="Email" required className="w-full rounded-xl border p-3" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+          <input type="password" placeholder="Password" required className="w-full rounded-xl border p-3" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center gap-2"><input type="checkbox" checked={formData.remember} onChange={(e) => setFormData({ ...formData, remember: e.target.checked })} />Remember me</label>
+            <button type="button" className="text-indigo-600">Forgot password</button>
           </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="john@example.com"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="••••••••"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-gray-600">
-          Don't have an account?{' '}
-          <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700 font-semibold">
-            Sign Up
-          </Link>
-        </p>
-      </div>
+          <button disabled={loading} className="w-full rounded-xl bg-indigo-600 p-3 font-semibold text-white hover:bg-indigo-700">{loading ? 'Logging in...' : 'Login'}</button>
+        </div>
+        <p className="mt-5 text-sm text-gray-600">No account? <Link href="/auth/signup" className="font-semibold text-indigo-600">Sign up</Link></p>
+      </form>
     </div>
   );
 }

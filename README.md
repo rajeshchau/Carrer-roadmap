@@ -39,11 +39,11 @@ AI-powered Personalized Career Roadmap LMS that generates curated Free & Premium
 - **TypeScript**
 - **Tailwind CSS 4**
 
-### Backend
-- **Node.js**
-- **Express 5**
+### Backend (Integrated in Next.js)
+- **Next.js Route Handlers (`app/api/*`)**
 - **TypeScript**
 - **JWT Authentication**
+- **Prisma-powered server logic**
 
 ### Database
 - **PostgreSQL**
@@ -61,12 +61,12 @@ carrer-roadmap/
 │   ├── layout.tsx         # Root layout
 │   ├── page.tsx           # Landing page
 │   └── globals.css        # Global styles
-├── backend/               # Express backend
-│   ├── controllers/       # Business logic
-│   ├── routes/            # API routes
-│   ├── middleware/        # Auth middleware
-│   ├── utils/             # Utilities (Prisma client)
-│   └── server.ts          # Express server
+├── app/api/               # Next.js API Route Handlers
+│   ├── auth/              # Login / signup / profile
+│   ├── quiz/              # Quiz submit / result
+│   ├── roadmap/           # Roadmap generation / retrieval
+│   ├── progress/          # Progress updates
+│   └── admin/             # Admin template management
 ├── components/            # Reusable React components
 ├── lib/                   # Frontend utilities
 │   ├── api.ts            # API client functions
@@ -105,12 +105,7 @@ DATABASE_URL="postgresql://postgres:password@localhost:5432/career_roadmap?schem
 # JWT Secret
 JWT_SECRET="your-secret-key-change-in-production"
 
-# Backend
-BACKEND_PORT=5000
-BACKEND_URL="http://localhost:5000"
-
-# Next.js
-NEXT_PUBLIC_API_URL="http://localhost:5000/api"
+NEXT_PUBLIC_API_URL="/api"
 ```
 
 ### 4. Set Up the Database
@@ -147,17 +142,11 @@ This will create:
 
 ### 5. Run the Application
 
-#### Start the backend server
-```bash
-npm run backend:dev
-```
-Backend will run on http://localhost:5000
-
-#### Start the frontend (in a new terminal)
+#### Start the full app (frontend + integrated API)
 ```bash
 npm run dev
 ```
-Frontend will run on http://localhost:3000
+App will run on http://localhost:3000
 
 ## 🧪 Testing
 
