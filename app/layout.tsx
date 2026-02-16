@@ -2,18 +2,14 @@ import '@/app/globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Career Roadmap LMS',
-  description: 'Personalized learning paths for your career goals',
+  title: 'PathForge – Personalized Career Roadmap LMS',
+  description: 'Personalized career roadmaps with onboarding quiz, progress tracking, and admin controls.',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="bg-gray-50 text-gray-900">{children}</body>
     </html>
   );
 }
