@@ -136,6 +136,7 @@ npm run prisma:seed
 
 This will create:
 - Admin user: `admin@career-roadmap.com` (password: `admin123`)
+- Demo learner: `demo@career-roadmap.com` (password: `demo123`)
 - Web Development roadmap template with 6 steps
 - Data Science roadmap template with 5 steps
 - Free and Premium resources for each step
@@ -187,6 +188,8 @@ docker-compose logs -f
 ### For Administrators
 
 1. **Login**: Use admin credentials (`admin@career-roadmap.com` / `admin123`)
+
+> Quick test login for learner pages: `demo@career-roadmap.com` / `demo123`.
 2. **Access Admin Panel**: You'll be redirected to `/admin`
 3. **Create Templates**: Click "Create Template" to add new roadmap templates
 4. **Manage Templates**: View, edit, or delete existing templates

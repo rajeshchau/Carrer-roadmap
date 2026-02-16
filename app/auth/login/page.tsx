@@ -8,7 +8,7 @@ import { setToken, setUser } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({ email: '', password: '', remember: false });
+  const [formData, setFormData] = useState({ email: 'demo@career-roadmap.com', password: 'demo123', remember: true });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +38,12 @@ export default function LoginPage() {
         <h1 className="mb-2 text-3xl font-bold">Login</h1>
         <p className="mb-6 text-gray-600">Welcome back to PathForge.</p>
         {error && <p className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+        <div className="mb-4 rounded-lg border border-indigo-100 bg-indigo-50 p-3 text-sm text-indigo-800">
+          <p className="font-semibold">Default test credentials</p>
+          <p>Learner: demo@career-roadmap.com / demo123</p>
+          <p>Admin: admin@career-roadmap.com / admin123</p>
+        </div>
+
         <div className="space-y-4">
           <input type="email" placeholder="Email" required className="w-full rounded-xl border p-3" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
           <input type="password" placeholder="Password" required className="w-full rounded-xl border p-3" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />

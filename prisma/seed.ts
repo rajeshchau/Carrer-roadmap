@@ -358,7 +358,81 @@ async function main() {
   });
   console.log('Created Data Science roadmap template');
 
-  console.log('Seed completed successfully!');
+
+
+  // Create demo learner user for testing non-admin pages
+  const demoPassword = await bcrypt.hash('demo123', 10);
+  const demoUser = await prisma.user.upsert({
+    where: { email: 'demo@career-roadmap.com' },
+    update: {
+      password: demoPassword,
+      name: 'Demo Learner',
+    },
+    create: {
+      email: 'demo@career-roadmap.com',
+      password: demoPassword,
+      name: 'Demo Learner',
+      role: 'USER',
+    },
+  });
+  console.log('Created demo user:', demoUser.email);
+
+  // Seed learner onboarding + roadmap so dashboard/roadmap/progress pages have data
+  await prisma.quizResult.upsert({
+    where: { userId: demoUser.id },
+    update: {
+      skillLevel: 'Beginner',
+      goal: 'Get a Job',
+      timeline: '6 months',
+      domain: 'Web Development',
+    },
+    create: {
+      userId: demoUser.id,
+      skillLevel: 'Beginner',
+      goal: 'Get a Job',
+      timeline: '6 months',
+      domain: 'Web Development',
+    },
+  });
+
+  let demoRoadmap = await prisma.userRoadmap.findFirst({
+    where: { userId: demoUser.id, templateId: webDevTemplate.id },
+  });
+
+  if (!demoRoadmap) {
+    demoRoadmap = await prisma.userRoadmap.create({
+      data: {
+        userId: demoUser.id,
+        templateId: webDevTemplate.id,
+      },
+    });
+  }
+
+  const firstStep = await prisma.roadmapStep.findFirst({
+    where: { templateId: webDevTemplate.id },
+    orderBy: { order: 'asc' },
+  });
+
+  if (firstStep) {
+    await prisma.progress.upsert({
+      where: {
+        userId_stepId: {
+          userId: demoUser.id,
+          stepId: firstStep.id,
+        },
+      },
+      update: { completed: true },
+      create: {
+        userId: demoUser.id,
+        stepId: firstStep.id,
+        completed: true,
+      },
+    });
+  }
+
+  console.log('Seeded demo learner roadmap:', demoRoadmap.id);
+
+    console.log('Seed completed successfully!');
 }
 
 main()
