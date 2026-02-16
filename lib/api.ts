@@ -13,11 +13,11 @@ export const api = {
       body: JSON.stringify(data),
     }),
 
-  login: async (data: { email: string; password: string; remember?: boolean }) =>
+  login: async (data: { email: string; password: string }) =>
     request('/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: data.email, password: data.password }),
+      body: JSON.stringify(data),
     }),
 
   getProfile: async (token: string) =>
