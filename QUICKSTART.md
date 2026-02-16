@@ -65,19 +65,6 @@ Expected output:
 
 ## Step 5: Start the Application
 
-Open two terminal windows:
-
-### Terminal 1 - Backend
-```bash
-npm run backend:dev
-```
-
-Expected output:
-```
-Backend server running on http://localhost:5000
-```
-
-### Terminal 2 - Frontend
 ```bash
 npm run dev
 ```
@@ -86,7 +73,10 @@ Expected output:
 ```
 ▲ Next.js 16.1.6
 - Local: http://localhost:3000
+- Ready in 2s
 ```
+
+The application includes integrated API routes at `/api/*`.
 
 ## Step 6: Access the Application
 
@@ -109,10 +99,10 @@ Run this in a new terminal to test the API:
 
 ```bash
 # Test health endpoint
-curl http://localhost:5000/api/health
+curl http://localhost:3000/api/health
 
 # Create a test user
-curl -X POST http://localhost:5000/api/auth/signup \
+curl -X POST http://localhost:3000/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"test123","name":"Test User"}'
 ```
@@ -130,10 +120,7 @@ docker-compose logs postgres
 
 ### Port already in use
 ```bash
-# Kill process on port 5000 (backend)
-lsof -ti:5000 | xargs kill -9
-
-# Kill process on port 3000 (frontend)
+# Kill process on port 3000 (Next.js)
 lsof -ti:3000 | xargs kill -9
 ```
 
@@ -163,8 +150,7 @@ chmod +x setup.sh
 ## Stop Everything
 
 ```bash
-# Stop backend (Ctrl+C in Terminal 1)
-# Stop frontend (Ctrl+C in Terminal 2)
+# Stop Next.js server (Ctrl+C in terminal)
 
 # Stop and remove PostgreSQL container
 docker-compose down

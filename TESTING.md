@@ -2,8 +2,7 @@
 
 ## Prerequisites
 - PostgreSQL running on port 5432
-- Backend server running on port 5000
-- Frontend server running on port 3000
+- Next.js development server running on port 3000 (includes API routes)
 
 ## Manual Testing Checklist
 
@@ -100,13 +99,13 @@ You can test the API endpoints using curl or Postman:
 
 #### Health Check
 ```bash
-curl http://localhost:5000/api/health
+curl http://localhost:3000/api/health
 ```
 ✅ Should return: `{"status":"ok","message":"Career Roadmap API is running"}`
 
 #### Signup
 ```bash
-curl -X POST http://localhost:5000/api/auth/signup \
+curl -X POST http://localhost:3000/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{"email":"api@test.com","password":"test123","name":"API Test"}'
 ```
@@ -114,7 +113,7 @@ curl -X POST http://localhost:5000/api/auth/signup \
 
 #### Login
 ```bash
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"api@test.com","password":"test123"}'
 ```
@@ -137,13 +136,8 @@ curl -X POST http://localhost:5000/api/auth/login \
 
 ## Common Issues and Troubleshooting
 
-### Backend Not Starting
-- Check if PostgreSQL is running
-- Verify DATABASE_URL in .env
-- Check if port 5000 is available
-
 ### Frontend Not Loading
-- Ensure backend is running first
+- Ensure Next.js dev server is running
 - Check NEXT_PUBLIC_API_URL in .env
 - Clear browser cache
 
