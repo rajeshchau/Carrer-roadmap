@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPrisma } from '@/lib/server/prisma';
 import { readAuthToken } from '@/lib/server/auth';
+import { toApiError } from '@/lib/server/errors';
 
 function ensureAdmin(request: NextRequest) {
   const auth = readAuthToken(request);

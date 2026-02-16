@@ -291,3 +291,12 @@ Created for the Career Roadmap LMS project.
 ---
 
 **Note**: This is a learning management system designed to help individuals create personalized career development plans. Make sure to change the JWT secret and admin password in production!
+
+
+## 🧯 Troubleshooting
+
+- **`/api/auth/login` returns 500**: this usually means server env is missing or DB is not ready.
+  1. Confirm `.env` contains `DATABASE_URL` and `JWT_SECRET`.
+  2. Run `npm run prisma:migrate` to ensure schema exists.
+  3. Verify PostgreSQL is running and reachable from `DATABASE_URL`.
+- **User already exists** on signup: use a different email than seeded accounts (`demo@career-roadmap.com`, `admin@career-roadmap.com`).

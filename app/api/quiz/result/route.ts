@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPrisma } from '@/lib/server/prisma';
 import { readAuthToken } from '@/lib/server/auth';
+import { toApiError } from '@/lib/server/errors';
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,6 +16,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(quizResult);
   } catch (error) {
     console.error('Get quiz result error', error);
+    const mapped = toApiError(error);
+    return NextResponse.json({ error: mapped.error, issue: mapped.issue }, { status: mapped.status });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
