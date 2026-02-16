@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  quizResult QuizResult?
+  roadmaps   UserRoadmap[]
+  progress   Progress[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model QuizResult {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillLevel   String // Beginner, Intermediate, Advanced
+  goal         String // e.g., "Full Stack Developer", "Data Scientist"
+  timeline     String // e.g., "3 months", "6 months", "1 year"
+  domain       String // e.g., "Web Development", "Data Science", "Mobile Development"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model RoadmapTemplate {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  domain      String
+  skillLevel  String
+  timeline    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  steps       RoadmapStep[]
+  userRoadmaps UserRoadmap[]
+}
+
+model RoadmapStep {
+  id          String   @id @default(uuid())
+  templateId  String
+  template    RoadmapTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  order       Int
+  title       String
+  description String
+  duration    String // e.g., "2 weeks"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  resources   Resource[]
+  progress    Progress[]
+}
+
+model Resource {
+  id          String   @id @default(uuid())
+  stepId      String
+  step        RoadmapStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  url         String
+  type        ResourceType
+  tier        ResourceTier
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ResourceType {
+  ARTICLE
+  VIDEO
+  COURSE
+  BOOK
+  PROJECT
+  PRACTICE
+}
+
+enum ResourceTier {
+  FREE
+  PREMIUM
+}
+
+model UserRoadmap {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  templateId String
+  template   RoadmapTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  startedAt  DateTime @default(now())
+  completedAt DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Progress {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stepId    String
+  step      RoadmapStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, stepId])
+}
