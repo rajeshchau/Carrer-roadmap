@@ -6,32 +6,33 @@
 
 A CodeQL security scan was performed on this codebase. The following findings were identified:
 
-#### Rate Limiting (9 alerts - Medium Priority)
-**Status**: Acknowledged - To be implemented in production
+#### Rate Limiting (Medium Priority)
+**Status**: To be implemented in production
 
-**Finding**: Route handlers perform authorization but are not rate-limited.
+**Finding**: API route handlers perform authorization but are not rate-limited.
 
-**Affected Files**:
-- backend/routes/admin.ts
-- backend/routes/auth.ts
-- backend/routes/progress.ts
-- backend/routes/quiz.ts
-- backend/routes/roadmap.ts
+**Affected Areas**:
+- Next.js API routes in `app/api/*`
+- Authentication endpoints
+- Admin endpoints
 
-**Recommendation**: Implement rate limiting using `express-rate-limit` for production deployments.
+**Recommendation**: Implement rate limiting using Vercel's Edge Middleware or third-party services for production deployments.
 
 **Mitigation Plan**:
-```javascript
-// Example implementation for production
-import rateLimit from 'express-rate-limit';
+```typescript
+// Example implementation with Next.js middleware
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 requests per windowMs
-  message: 'Too many authentication attempts, please try again later'
-});
+// Use Vercel's edge rate limiting or third-party service like Upstash
+export function middleware(request: NextRequest) {
+  // Implement rate limiting logic here
+  // For Vercel, consider using Upstash Rate Limit or similar
+}
 
-app.use('/api/auth/login', authLimiter);
+export const config = {
+  matcher: '/api/:path*',
+};
 ```
 
 ## Security Features Implemented
@@ -53,6 +54,11 @@ app.use('/api/auth/login', authLimiter);
 - ✅ Basic input validation on required fields
 - ⚠️ Additional input sanitization recommended for production
 
+## Architecture
+- **Next.js API Routes**: Serverless functions deployed on Vercel
+- **Database**: PostgreSQL with Prisma ORM for SQL injection prevention
+- **Authentication**: JWT-based with secure token handling
+
 ## Recommended Security Enhancements for Production
 
 ### High Priority
@@ -67,19 +73,21 @@ app.use('/api/auth/login', authLimiter);
    - Use secure cookies with httpOnly flag
 
 3. **CORS Configuration**
-   - Restrict allowed origins to your domain
-   - Remove wildcard CORS in production
+   - Already handled by Next.js for API routes
+   - Configure additional restrictions in production if needed
+   - Use Vercel's built-in security features
 
 ### Medium Priority
 4. **Input Validation & Sanitization**
-   - Use express-validator for comprehensive validation
+   - Implement comprehensive validation for all inputs
    - Sanitize user inputs to prevent XSS
    - Validate email formats strictly
 
 5. **Security Headers**
-   - Implement Helmet.js
-   - Set CSP (Content Security Policy)
+   - Next.js provides good defaults
+   - Configure additional headers in next.config.js
    - Enable HSTS
+   - Set CSP (Content Security Policy)
 
 6. **Session Management**
    - Implement token refresh mechanism
@@ -101,19 +109,17 @@ app.use('/api/auth/login', authLimiter);
 
 ### Current State (Development)
 This application is configured for development/learning purposes with:
-- Permissive CORS settings
-- No rate limiting
+- Next.js API routes without rate limiting
 - Basic input validation
 - JWT tokens in localStorage
 - Detailed error messages
 
 ### Required for Production
 Before deploying to production, implement:
-- [ ] Rate limiting on all endpoints
-- [ ] HTTPS/TLS encryption
-- [ ] Restricted CORS configuration
+- [ ] Rate limiting on authentication endpoints (consider Upstash or similar)
+- [ ] HTTPS/TLS encryption (automatic with Vercel)
 - [ ] Comprehensive input validation
-- [ ] Security headers (Helmet.js)
+- [ ] Security headers via next.config.js
 - [ ] httpOnly secure cookies for tokens
 - [ ] Environment-specific error handling
 - [ ] Regular dependency updates
@@ -167,5 +173,6 @@ Next Scheduled Review: TBD
 ## Resources
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [Express Security Best Practices](https://expressjs.com/en/advanced/best-practice-security.html)
+- [Next.js Security Best Practices](https://nextjs.org/docs/app/building-your-application/security)
+- [Vercel Security](https://vercel.com/docs/security)
 - [Node.js Security Checklist](https://blog.risingstack.com/node-js-security-checklist/)

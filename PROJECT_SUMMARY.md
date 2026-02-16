@@ -17,23 +17,23 @@ A full-stack Personalized Career Roadmap Learning Management System that helps u
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Frontend (Next.js)                    │
-│  ┌──────────┬──────────┬──────────┬──────────┐          │
-│  │  Home    │  Auth    │  Quiz    │Dashboard │          │
-│  │  Page    │  Pages   │  Flow    │  & Admin │          │
-│  └──────────┴──────────┴──────────┴──────────┘          │
+│              Next.js Application                         │
+│  ┌──────────────────────────────────────────────┐       │
+│  │         Frontend (React Pages)               │       │
+│  │  ┌──────────┬──────────┬──────────┬─────────┐│       │
+│  │  │  Home    │  Auth    │  Quiz    │Dashboard││       │
+│  │  │  Page    │  Pages   │  Flow    │  & Admin││       │
+│  │  └──────────┴──────────┴──────────┴─────────┘│       │
+│  └──────────────────────────────────────────────┘       │
 │              │                                            │
 │              │ API Calls (fetch)                         │
 │              ▼                                            │
-└─────────────────────────────────────────────────────────┘
-               │
-               │ HTTP/REST
-               ▼
-┌─────────────────────────────────────────────────────────┐
-│              Backend API (Express)                       │
 │  ┌──────────────────────────────────────────────┐       │
-│  │  Authentication  │  Quiz  │  Roadmap  │ Admin│       │
-│  │   Controllers    │  Logic │Generator  │ Panel│       │
+│  │      API Routes (app/api/*)                  │       │
+│  │  ┌──────────────────────────────────────────┐│       │
+│  │  │  Auth  │  Quiz  │  Roadmap  │  Admin     ││       │
+│  │  │  API   │  API   │  API      │  API       ││       │
+│  │  └──────────────────────────────────────────┘│       │
 │  └──────────────────────────────────────────────┘       │
 │              │                                            │
 │              │ Prisma ORM                                │
@@ -75,7 +75,14 @@ A full-stack Personalized Career Roadmap Learning Management System that helps u
 
 ```
 carrer-roadmap/
-├── app/                          # Next.js App Router Pages
+├── app/                          # Next.js App Router
+│   ├── api/                      # API Routes (Next.js handlers)
+│   │   ├── auth/                 # Authentication endpoints
+│   │   ├── quiz/                 # Quiz endpoints
+│   │   ├── roadmap/              # Roadmap endpoints
+│   │   ├── progress/             # Progress endpoints
+│   │   ├── admin/                # Admin endpoints
+│   │   └── health/               # Health check
 │   ├── auth/                     # Authentication pages
 │   │   ├── login/page.tsx       # Login page
 │   │   └── signup/page.tsx      # Signup page
@@ -86,29 +93,12 @@ carrer-roadmap/
 │   ├── layout.tsx               # Root layout
 │   └── globals.css              # Global styles
 │
-├── backend/                      # Express Backend
-│   ├── controllers/             # Business logic
-│   │   ├── authController.ts
-│   │   ├── quizController.ts
-│   │   ├── roadmapController.ts
-│   │   ├── progressController.ts
-│   │   └── adminController.ts
-│   ├── routes/                  # API routes
-│   │   ├── auth.ts
-│   │   ├── quiz.ts
-│   │   ├── roadmap.ts
-│   │   ├── progress.ts
-│   │   └── admin.ts
-│   ├── middleware/              # Auth middleware
-│   │   └── auth.ts
-│   ├── utils/                   # Utilities
-│   │   └── prisma.ts
-│   ├── server.ts                # Express server
-│   └── tsconfig.json            # TS config
-│
-├── lib/                         # Frontend utilities
+├── lib/                         # Shared utilities
+│   ├── server/                  # Server-side utilities
+│   │   ├── auth.ts              # Auth helpers
+│   │   └── prisma.ts            # Prisma client
 │   ├── api.ts                   # API client
-│   ├── auth.ts                  # Auth helpers
+│   ├── auth.ts                  # Frontend auth helpers
 │   └── types.ts                 # TypeScript types
 │
 ├── prisma/                      # Database
@@ -307,8 +297,7 @@ carrer-roadmap/
 - Tailwind CSS 3
 
 ### Backend
-- Node.js
-- Express 5
+- Next.js 16 (API Routes)
 - TypeScript
 - JWT (jsonwebtoken)
 - bcryptjs
@@ -333,9 +322,9 @@ carrer-roadmap/
 
 ### Build Success
 - ✅ Next.js build: SUCCESS
-- ✅ Backend compilation: SUCCESS
 - ✅ Prisma generation: SUCCESS
 - ✅ All dependencies resolved
+- ✅ All API routes compiled
 
 ### Security Scan
 - ✅ CodeQL scan completed

@@ -115,7 +115,7 @@ curl -X POST http://localhost:3000/api/auth/signup \
 docker ps
 
 # View PostgreSQL logs
-docker-compose logs postgres
+docker compose logs postgres
 ```
 
 ### Port already in use
