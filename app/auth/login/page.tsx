@@ -8,7 +8,7 @@ import { setToken, setUser } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({ email: 'demo@career-roadmap.com', password: 'demo123', remember: true });
+  const [formData, setFormData] = useState({ email: 'demo@career-roadmap.com', password: 'demo123' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -47,10 +47,6 @@ export default function LoginPage() {
         <div className="space-y-4">
           <input type="email" placeholder="Email" required className="w-full rounded-xl border p-3" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
           <input type="password" placeholder="Password" required className="w-full rounded-xl border p-3" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
-          <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center gap-2"><input type="checkbox" checked={formData.remember} onChange={(e) => setFormData({ ...formData, remember: e.target.checked })} />Remember me</label>
-            <button type="button" className="text-indigo-600">Forgot password</button>
-          </div>
           <button disabled={loading} className="w-full rounded-xl bg-indigo-600 p-3 font-semibold text-white hover:bg-indigo-700">{loading ? 'Logging in...' : 'Login'}</button>
         </div>
         <p className="mt-5 text-sm text-gray-600">No account? <Link href="/auth/signup" className="font-semibold text-indigo-600">Sign up</Link></p>

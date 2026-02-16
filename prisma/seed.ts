@@ -432,7 +432,7 @@ async function main() {
 
   console.log('Seeded demo learner roadmap:', demoRoadmap.id);
 
-    console.log('Seed completed successfully!');
+  console.log('Seed completed successfully!');
 }
 
 main()
