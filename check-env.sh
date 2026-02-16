@@ -73,16 +73,10 @@ if command -v docker &> /dev/null; then
 fi
 
 # Check if ports are available
-if lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null 2>&1; then
-    echo -e "${YELLOW}⚠${NC} Port 5000 is in use (backend)"
-else
-    echo -e "${GREEN}✓${NC} Port 5000 available (backend)"
-fi
-
 if lsof -Pi :3000 -sTCP:LISTEN -t >/dev/null 2>&1; then
-    echo -e "${YELLOW}⚠${NC} Port 3000 is in use (frontend)"
+    echo -e "${YELLOW}⚠${NC} Port 3000 is in use (Next.js)"
 else
-    echo -e "${GREEN}✓${NC} Port 3000 available (frontend)"
+    echo -e "${GREEN}✓${NC} Port 3000 available (Next.js)"
 fi
 
 echo ""
@@ -94,8 +88,7 @@ if [ $errors -eq 0 ]; then
     echo "1. Run 'docker-compose up -d' to start PostgreSQL"
     echo "2. Run 'npm run prisma:migrate' to set up the database"
     echo "3. Run 'npm run prisma:seed' to add sample data"
-    echo "4. Run 'npm run backend:dev' to start the backend"
-    echo "5. Run 'npm run dev' to start the frontend"
+    echo "4. Run 'npm run dev' to start the application"
 else
     echo -e "${RED}Please install missing dependencies before proceeding.${NC}"
 fi

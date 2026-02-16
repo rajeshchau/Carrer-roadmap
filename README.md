@@ -96,15 +96,22 @@ npm install
 ```
 
 ### 3. Configure Environment Variables
-Create a `.env` file in the root directory:
+Copy the `.env.example` file to create your `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+The default values are configured for local development with Docker. For production, update these values:
 
 ```env
-# Database
+# Database - Use a cloud PostgreSQL provider for Vercel (Neon, Supabase, Vercel Postgres, etc.)
 DATABASE_URL="postgresql://postgres:password@localhost:5432/career_roadmap?schema=public"
 
-# JWT Secret
+# JWT Secret - Change this to a strong random string in production
 JWT_SECRET="your-secret-key-change-in-production"
 
+# Next.js API URL
 NEXT_PUBLIC_API_URL="/api"
 ```
 
@@ -143,11 +150,11 @@ This will create:
 
 ### 5. Run the Application
 
-#### Start the full app (frontend + integrated API)
 ```bash
 npm run dev
 ```
-App will run on http://localhost:3000
+
+The application will run on http://localhost:3000 with integrated API routes at `/api/*`.
 
 ## 🧪 Testing
 
@@ -260,14 +267,10 @@ For production deployment, consider adding:
 ## 🛠️ Available Scripts
 
 ```bash
-# Frontend
-npm run dev          # Start Next.js development server
+# Development
+npm run dev          # Start Next.js development server (includes API routes)
 npm run build        # Build for production
 npm start            # Start production server
-
-# Backend
-npm run backend      # Start backend server
-npm run backend:dev  # Start backend with auto-reload
 
 # Database
 npm run prisma:generate  # Generate Prisma client
@@ -275,6 +278,82 @@ npm run prisma:migrate   # Run database migrations
 npm run prisma:seed      # Seed database with sample data
 npm run prisma:studio    # Open Prisma Studio (database GUI)
 ```
+
+## 🚀 Vercel Deployment
+
+This application is fully compatible with Vercel's serverless platform.
+
+### Prerequisites
+- Vercel account
+- Cloud PostgreSQL database (recommended providers):
+  - **Vercel Postgres** - Integrated with Vercel
+  - **Neon** - Serverless PostgreSQL
+  - **Supabase** - Open-source alternative
+
+### Deployment Steps
+
+1. **Set up a Cloud Database**
+   
+   Choose one of the following:
+   
+   **Option A: Vercel Postgres** (Recommended for Vercel)
+   - Create a new Postgres database in your Vercel project
+   - Copy the `DATABASE_URL` connection string
+
+   **Option B: Neon**
+   - Sign up at [neon.tech](https://neon.tech)
+   - Create a new project
+   - Copy the connection string
+
+   **Option C: Supabase**
+   - Sign up at [supabase.com](https://supabase.com)
+   - Create a new project
+   - Get the connection string from Settings > Database
+
+2. **Deploy to Vercel**
+   
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
+   
+   # Deploy
+   vercel
+   ```
+
+3. **Configure Environment Variables**
+   
+   In your Vercel project settings, add:
+   
+   ```env
+   DATABASE_URL="your-cloud-database-connection-string"
+   JWT_SECRET="your-strong-random-secret"
+   NEXT_PUBLIC_API_URL="/api"
+   ```
+   
+   Generate a secure JWT secret:
+   ```bash
+   openssl rand -base64 32
+   ```
+
+4. **Run Database Migrations**
+   
+   After deployment, run migrations:
+   ```bash
+   # If using Vercel Postgres
+   vercel env pull .env.local
+   npm run prisma:migrate deploy
+   npm run prisma:seed
+   ```
+
+5. **Access Your Application**
+   
+   Your app will be available at `https://your-project.vercel.app`
+
+### Important Notes
+- The API routes are automatically deployed as serverless functions
+- All API endpoints are available at `/api/*`
+- Database connection pooling is handled by Prisma
+- For production, ensure `JWT_SECRET` is a strong random string
 
 ## 🤝 Contributing
 

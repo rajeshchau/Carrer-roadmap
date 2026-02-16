@@ -19,6 +19,16 @@ fi
 echo "✓ Docker and Node.js are installed"
 echo ""
 
+# Create .env file if it doesn't exist
+if [ ! -f ".env" ]; then
+    echo "📝 Creating .env file from .env.example..."
+    cp .env.example .env
+    echo "✓ .env file created"
+else
+    echo "✓ .env file already exists"
+fi
+echo ""
+
 # Start PostgreSQL with Docker
 echo "📦 Starting PostgreSQL database..."
 docker-compose up -d
@@ -49,9 +59,8 @@ echo ""
 echo "✅ Setup complete!"
 echo ""
 echo "📝 Next steps:"
-echo "1. Start the backend server: npm run backend:dev"
-echo "2. In a new terminal, start the frontend: npm run dev"
-echo "3. Visit http://localhost:3000 to see the application"
+echo "1. Start the Next.js development server: npm run dev"
+echo "2. Visit http://localhost:3000 to see the application"
 echo ""
 echo "🔑 Admin credentials:"
 echo "   Email: admin@career-roadmap.com"
